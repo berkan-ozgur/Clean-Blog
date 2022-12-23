@@ -1,7 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
 const ejs = require('ejs')
 const Blog = require('./models/BlogDetails')
+
 
 const app = express();
 
@@ -19,9 +21,10 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] }))
 
 app.get('/', async (req, res) => {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).sort('-dateCreated')
     res.render('index', {
         blogs
     })
@@ -36,11 +39,22 @@ app.post('/blog', async (req, res) => {
     await Blog.create(req.body)
     res.redirect('/')
 })
-app.get('/post/:id', async (req, res) => {
+app.get('/blogs/:id', async (req, res) => {
     const blog = await Blog.findById(req.params.id)
     res.render('post', {
         blog
     })
+})
+app.delete('/blogs/:id', async (req, res) => {
+    await Blog.findByIdAndRemove(req.params.id)
+    res.redirect('/')
+})
+app.put('/blogs/:id', async (req, res) => {
+    const blog = await Blog.findOne({ _id: req.params.id })
+    blog.title = req.body.title
+    blog.detail = req.body.detail
+    blog.save()
+    res.redirect(`/blogs/${req.params.id}`)
 })
 
 const port = 3000;
