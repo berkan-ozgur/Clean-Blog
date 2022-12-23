@@ -49,6 +49,12 @@ app.delete('/blogs/:id', async (req, res) => {
     await Blog.findByIdAndRemove(req.params.id)
     res.redirect('/')
 })
+app.get('/blogs/edit/:id', async (req, res) => {
+    const blog = await Blog.findOne({ _id: req.params.id })
+    res.render('edit', {
+        blog
+    })
+})
 app.put('/blogs/:id', async (req, res) => {
     const blog = await Blog.findOne({ _id: req.params.id })
     blog.title = req.body.title
@@ -56,7 +62,6 @@ app.put('/blogs/:id', async (req, res) => {
     blog.save()
     res.redirect(`/blogs/${req.params.id}`)
 })
-
 const port = 3000;
 app.listen(port, () => {
     console.log(`Sunucu ${port} portunda başlatıldı!...`)

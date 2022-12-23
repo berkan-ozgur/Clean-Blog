@@ -20,27 +20,27 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
-                    <form method="post" action="/blogs/<%= blog._id %>?_method=PUT">
+                    <form method="POST" action="/blogs/<%= blog._id %>?_method=PUT">
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls">
                                 <label>Post Title</label>
-                                <input type="text" class="form-control" placeholder="<%= blog.title %>" id="title"
-                                    required data-validation-required-message="Please input title." name="title">
+                                <input type="text" class="form-control" value="<%= blog.title %>" id="title" required
+                                    data-validation-required-message="Please input title." name="title">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls">
                                 <label>Post Detail</label>
-                                <textarea rows="5" class="form-control" value="<%= blog.detail %>" id="detail" required
+                                <textarea rows="5" class="form-control" id="detail" required
                                     data-validation-required-message="Please enter description."
-                                    name="detail"></textarea>
+                                    name="detail"><%= blog.detail %></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <br>
                         <div id="success"></div>
-                        <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+                        <button type="submit" class="btn btn-primary" id="sendMessageButton">Update</button>
                     </form>
                 </div>
             </div>
